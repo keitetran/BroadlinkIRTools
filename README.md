@@ -1,7 +1,7 @@
-# VueJs template using Webpack 4
+# Broadlink tools
 
 This tool support for SmartIR  https://github.com/smartHomeHub/SmartIR <br>
-You can use it from this page  https://keitetran.github.io/BroadlinkIRTools/index.html#/.
+You can use it from this page  https://keitetran.github.io/BroadlinkIRTools/
 
 ## How it work
 - Disable ads block on browser 
