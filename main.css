@@ -19,6 +19,12 @@
 .form-group .form-text {
   margin-top: 0;
 }
+.form-group.is-invalid .form-control {
+  border-color: #dc3545 !important;
+}
+.form-group.is-invalid .form-text {
+  color: #dc3545 !important;
+}
 .alert {
   font-size: 0.8rem;
 }
