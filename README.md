@@ -3,6 +3,8 @@
 This tool support for SmartIR  https://github.com/smartHomeHub/SmartIR <br>
 You can use it from this page  https://keitetran.github.io/BroadlinkIRTools/
 
+Getting for HASS v0.90... pls wait...
+
 ## How it work
 - Disable ads block on browser 
 - This will connect to your hass via webservice 
