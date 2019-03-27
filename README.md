@@ -4,7 +4,7 @@ This tool support for SmartIR  https://github.com/smartHomeHub/SmartIR <br>
 You can use it from this page  https://keitetran.github.io/BroadlinkIRTools/
 
 ## How it work
-- Disable ads block on browser 
+- Disable ads block on browser. I dont add anymore ads to this site, but adblocker will block connection to your hass :( Sorry for the inconvenience
 - This will connect to your hass via webservice 
 - ... 
 
