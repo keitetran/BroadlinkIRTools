@@ -1,0 +1,72 @@
+{
+  "editor.tabSize": 2,
+  "editor.minimap.enabled": false,
+  "editor.wordWrap": "on",
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.wwp-cache": true,
+    "**/.DS_Store": true,
+    "**/*.designer.cs": true,
+    "**/node_modules": true
+  },
+  "explorer.confirmDragAndDrop": false,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "explorer.confirmDelete": false,
+  "window.zoomLevel": 0,
+  "vsicons.dontShowNewVersionMessage": true,
+  "javascript.preferences.quoteStyle": "double",
+  "javascript.referencesCodeLens.enabled": true,
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "vetur.format.defaultFormatter.scss": "prettier",
+  "vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+      "wrap_attributes": "auto",
+      "wrap_attributes_mode": "none"
+    },
+    "prettyhtml": {
+      "printWidth": 100,
+      "singleQuote": false,
+      "wrapAttributes": false,
+      "sortAttributes": false
+    }
+  },
+  "fileHeaderComment.template": {
+    "*": [
+      "${commentbegin}",
+      "${commentprefix} Created on ${datetime}",
+      "${commentprefix} Project name ${projectName} ${projectVersion}",
+      "${commentprefix} Copyright (c) ${year} ${auth}",
+      "${commentend}"
+    ]
+  },
+  "fileHeaderComment.parameter": {
+    "*": {}
+  },
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "vue",
+      "autoFix": true
+    }
+  ],
+  "eslint.alwaysShowStatus": true,
+  "css.remoteStyleSheets": [
+    "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css",
+  ],
+  "html.format.wrapLineLength": 0,
+  "css.fileExtensions": [
+    "scss"
+  ]
+}

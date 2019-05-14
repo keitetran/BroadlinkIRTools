@@ -1,7 +1,11 @@
+# NEW TOOL URL HERE
+https://keitetran.github.io/BroadlinkIRToolsVueJs/dist
+
+I was publish full source code and change tool url
 # Broadlink tools
 
 This tool support for SmartIR  https://github.com/smartHomeHub/SmartIR <br>
-You can use it from this page  https://keitetran.github.io/BroadlinkIRTools/
+You can use it from this page  https://keitetran.github.io/BroadlinkIRToolsVueJs/dist
 
 ## How it work
 - Disable ads block on browser. I dont add anymore ads to this site, but adblocker will block connection to your hass :( Sorry for the inconvenience
@@ -14,3 +18,16 @@ You can use it from this page  https://keitetran.github.io/BroadlinkIRTools/
 - Support universal code
 - Import and edit your json (not yet)
 - Support create climate with Swing (not yet)
+
+# For developer 
+```
+git clone https://github.com/keitetran/BroadlinkIRTools.git
+cd BroadlinkIRTools
+npm i
+npm run dev
+```
+
+Build code and commit
+```
+npm run build
+```
