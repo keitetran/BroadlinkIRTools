@@ -1,7 +1,7 @@
 # NEW TOOL URL HERE
 https://keitetran.github.io/BroadlinkIRTools/dist/#/
 
-I was publish full source code and change tool url
+I was publish full source code and change tool url. Please help me fix bug when HASS APi was change. 
 # Broadlink tools
 
 This tool support for SmartIR  https://github.com/smartHomeHub/SmartIR <br>
