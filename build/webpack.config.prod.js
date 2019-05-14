@@ -28,7 +28,6 @@ module.exports = merge(baseConfig, {
       use: [
         MiniCssExtractPlugin.loader,
         'css-loader',
-        'stylus-loader'
       ]
     }]
   },
