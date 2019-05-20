@@ -15,14 +15,16 @@ It's necessary to add script like this:
 ```
 *Adjust with your ip and preferred name.*
 
+**In the field "Broadlink service" of the service page put only then name of the script.** (example: ```broadlink_learn_command_192_168_1_13```).
+
 N.B.: It's a workaroud, please understand, I have too low knowledge of nodejs to made a more elegant solution.
 
 # URL FOR THIS FORK
 https://unclehook.github.io/BroadlinkIRTools/#/
 
 I was publish full source code and change tool url. Please help me fix bug when HASS APi was change. 
-# Broadlink tools
 
+# Broadlink tools
 This tool support for SmartIR  https://github.com/smartHomeHub/SmartIR <br>
 You can use it from this page  https://unclehook.github.io/BroadlinkIRTools/#/
 
