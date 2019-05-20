@@ -36,7 +36,7 @@
             <code class="mb-0 float-right tip">Enter Hass url will show tip</code>
             <input v-model="hassInfo.serviceCommand" v-validate="'required'" data-vv-as="broadlink service" name="hassInfo.serviceCommand" type="text" class="form-control form-control-sm">
             <small v-if="errors.has('hassInfo.serviceCommand')" class="form-text text-muted">{{ errors.first('hassInfo.serviceCommand') }}</small>
-            <small v-else class="form-text text-muted">Broadlink send command, get it on HASS dev page <template v-if="showTip"><a :href="hassInfo.url+'/dev-service'" target="_blank">click here</a> and find <code>switch.broadlink...</code></template></small>
+            <small v-else class="form-text text-muted">Broadlink send command, get it on HASS dev page <template v-if="showTip"><a :href="hassInfo.url+'/dev-service'" target="_blank">click here</a> and find <code>script.broadlink...</code></template></small>
           </div>
           <div class="form-group mb-1">
             <div class="row align-items-center">
