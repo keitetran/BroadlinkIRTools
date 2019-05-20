@@ -80,7 +80,8 @@ export default {
       this.$store.state.socket.send(JSON.stringify({
         id: this.$store.state.socketId++,
         type: "call_service",
-        domain: "switch",
+//        domain: "switch",
+		domain: "script",
         service: this.$store.state.hassInfo.serviceCommand
       }));
     },
