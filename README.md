@@ -13,7 +13,7 @@ It's necessary to add script like this:
       host: 192.168.1.13
     service: broadlink.learn
 ```
-*Adjust with yours ip and preferred name*
+*Adjust with your ip and preferred name*
 
 N.B.: It's a workaroud, please understand, I have too low knowledge of nodejs to made a more elegant solution.
 
