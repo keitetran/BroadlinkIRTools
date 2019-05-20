@@ -81,7 +81,7 @@ export default {
         id: this.$store.state.socketId++,
         type: "call_service",
 //        domain: "switch",
-		domain: "script",
+        domain: "script",
         service: this.$store.state.hassInfo.serviceCommand
       }));
     },
