@@ -42,7 +42,7 @@ You can use it from this page  https://unclehook.github.io/BroadlinkIRTools/#/
 
 # For developer 
 ```
-git clone https://github.com/keitetran/BroadlinkIRTools.git
+git clone https://github.com/unclehook/BroadlinkIRTools.git
 cd BroadlinkIRTools
 npm i
 npm run dev
