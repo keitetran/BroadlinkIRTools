@@ -29,7 +29,10 @@
             <code class="mb-0 float-right tip">Enter Hass url will show tip</code>
             <input v-model="hassInfo.token" v-validate="'required'" :disabled="hassInfoStatus" data-vv-as="token" name="hassInfo.token" type="text" class="form-control form-control-sm">
             <small v-if="errors.has('hassInfo.token')" class="form-text text-muted">{{ errors.first('hassInfo.token') }}</small>
-            <small v-else class="form-text text-muted">HASS long time token <a target="_blank" href="https://www.home-assistant.io/docs/authentication/#your-account-profile">readmore</a> <template v-if="showTip">or get it from <a :href="hassInfo.url+'/profile'" target="_blank">here</a></template></small>
+            <small v-else class="form-text text-muted">
+              HASS long time token <a target="_blank" href="https://www.home-assistant.io/docs/authentication/#your-account-profile">readmore</a>
+              <template v-if="showTip"> or get it from <a :href="hassInfo.url+'/profile'" target="_blank">here</a></template>
+            </small>
           </div>
           <div class="form-group mb-1" :class="{'is-invalid':errors.has('hassInfo.broadlinkIp')}">
             <label class="mb-0">Broadlink IP address</label>
@@ -84,7 +87,7 @@ export default {
   },
   computed: {
     showTip: function () {
-      return !!((this.hassInfo.url && !this.errors.first("hassInfo.url")));
+      return !!((this.hassInfo.url && this.hassInfo.url !== "https://" && !this.errors.first("hassInfo.url")));
     },
     hassInfoStatus: function () {
       return this.$store.state.socketStatus === config.socketStatus.connected;
