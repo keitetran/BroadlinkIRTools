@@ -1,7 +1,5 @@
-import FileSaver from "file-saver";
 import {
   config,
-  swal,
   helper
 } from "../../../lib";
 export default {
@@ -115,13 +113,8 @@ export default {
         }
       });
 
-      var blob = new Blob([JSON.stringify(jsonData, "")], {
-        type: "application/json;charset=utf-8"
-      });
-      FileSaver.saveAs(blob, "your-ir-code.json");
-      swal("Good job!", "Your file was downloaded! Please note that the device_code field only accepts positive numbers. The .json extension is not required.", "success", {
-        button: "Oki!"
-      });
+      // export file
+      helper.exportFileSaver(jsonData);
     },
     setupComponent() {
       this.$validator.validateAll().then((result) => {
