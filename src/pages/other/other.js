@@ -1,7 +1,8 @@
 import FileSaver from "file-saver";
 import {
   config,
-  swal
+  swal,
+  helper
 } from "../../../lib";
 export default {
   data() {
@@ -76,16 +77,10 @@ export default {
       console.log("Command was send..", _index);
       this.sendTarget = _index;
       this.$set(this.irData[_index], "iconClass", config.iconIr.learning);
-
-      this.$store.state.socket.send(JSON.stringify({
-        id: this.$store.state.socketId++,
-        type: "call_service",
-        domain: "switch",
-        service: this.$store.state.hassInfo.serviceCommand
-      }));
+      helper.sendBroadlinkLearnCmd(this.$store.state.hassInfo.broadlinkIp);
     },
-    changeBroadlinkCommand() {
-      this.$store.state.hassInfo.serviceCommand = this.hassInfo.serviceCommand;
+    changeBroadlinkIp() {
+      this.$store.state.hassInfo.broadlinkIp = this.hassInfo.broadlinkIp;
     }
   }
 };

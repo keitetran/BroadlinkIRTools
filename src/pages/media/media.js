@@ -1,7 +1,8 @@
 import FileSaver from "file-saver";
 import {
   config,
-  swal
+  swal,
+  helper
 } from "../../../lib";
 export default {
   data() {
@@ -130,20 +131,13 @@ export default {
       console.log("Command was send..", _target.key);
       this.sendTarget = _target;
       this.$set(this.irData[this.sendTarget.key], "iconClass", config.iconIr.learning);
-
-      this.$store.state.socket.send(JSON.stringify({
-        id: this.$store.state.socketId++,
-        type: "call_service",
-        domain: "switch",
-        service: this.$store.state.hassInfo.serviceCommand
-      }));
+      helper.sendBroadlinkLearnCmd(this.$store.state.hassInfo.broadlinkIp);
     },
-    changeBroadlinkCommand() {
-      this.$store.state.hassInfo.serviceCommand = this.hassInfo.serviceCommand;
+    changeBroadlinkIp() {
+      this.$store.state.hassInfo.broadlinkIp = this.hassInfo.broadlinkIp;
     },
     mixSource() {
       if (this.sourceSelected.length < 2) return alert("Chọn tối thiểu 2 đơn vị");
-
       this.irData.map(m1 => {
         if (m1.key === this.sourceSelected.map(m2 => `source_${m2}` === m1.key)) {
           if (m1.irCode === "") return alert("Ircode was nulled");

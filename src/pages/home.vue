@@ -31,12 +31,10 @@
             <small v-if="errors.has('hassInfo.token')" class="form-text text-muted">{{ errors.first('hassInfo.token') }}</small>
             <small v-else class="form-text text-muted">HASS long time token <a target="_blank" href="https://www.home-assistant.io/docs/authentication/#your-account-profile">readmore</a> <template v-if="showTip">or get it from <a :href="hassInfo.url+'/profile'" target="_blank">here</a></template></small>
           </div>
-          <div class="form-group mb-1" :class="{'is-invalid':errors.has('hassInfo.serviceCommand')}">
-            <label class="mb-0">Broadlink service</label>
-            <code class="mb-0 float-right tip">Enter Hass url will show tip</code>
-            <input v-model="hassInfo.serviceCommand" v-validate="'required'" data-vv-as="broadlink service" name="hassInfo.serviceCommand" type="text" class="form-control form-control-sm">
-            <small v-if="errors.has('hassInfo.serviceCommand')" class="form-text text-muted">{{ errors.first('hassInfo.serviceCommand') }}</small>
-            <small v-else class="form-text text-muted">Broadlink send command, get it on HASS dev page <template v-if="showTip"><a :href="hassInfo.url+'/dev-service'" target="_blank">click here</a> and find <code>switch.broadlink...</code></template></small>
+          <div class="form-group mb-1" :class="{'is-invalid':errors.has('hassInfo.broadlinkIp')}">
+            <label class="mb-0">Broadlink IP address</label>
+            <input v-model="hassInfo.broadlinkIp" v-validate="'required'" data-vv-as="broadlink service" name="hassInfo.broadlinkIp" type="text" class="form-control form-control-sm">
+            <small v-if="errors.has('hassInfo.broadlinkIp')" class="form-text text-muted">{{ errors.first('hassInfo.broadlinkIp') }}</small>
           </div>
           <div class="form-group mb-1">
             <div class="row align-items-center">
@@ -80,7 +78,7 @@ export default {
       hassInfo: {
         url: "https://",
         token: undefined,
-        serviceCommand: "broadlink_learn_command_192_168_1_13"
+        broadlinkIp: "192.168.1.13"
       }
     };
   },
@@ -137,7 +135,11 @@ export default {
             }));
           }
 
-          if (evData.type === "auth_invalid") throw new Error("Token invalid...");
+          if (evData.type === "auth_invalid") {
+            return swal("Woa!", "Token invalid...", "error", {
+              button: "Oki!"
+            });
+          }
 
           if (evData.type === "auth_ok") {
             console.log("Login ok...");
@@ -162,7 +164,11 @@ export default {
             });
           }
 
-          if (evData.success === false) throw new Error(evData.error.message);
+          if (evData.success === false) {
+            return swal("Error!", evData.error.message, "error", {
+              button: "Oki!"
+            });
+          };
 
           vm.$store.state.socketMsgs = evData;
         };
