@@ -90,6 +90,19 @@
             <small v-if="errors.has('settings.fanModes')" class="form-text text-muted">{{ errors.first('settings.fanModes') }}</small>
             <small v-else class="form-text text-muted">Ex: auto, level1, level2, level3, level4</small>
           </div>
+          <div class="form-group mb-1" :class="{ 'is-invalid': errors.has('settings.fanModes') }">
+            <label class="mb-0" for="swingModeInput">Swing Modes</label>
+            <div class="form-check">
+              <input id="swingModesEnabledInput" v-model="settings.swingModesEnabled" :disabled="hassInfoStatus" data-vv-as="swing modes enabled" name="settings.swingModesEnabled" type="checkbox" class="form-check-input">
+              <label class="form-check-label" for="swingModesEnabledInput">
+                <span style="height: 0; display: block; width: 0;overflow: hidden;">Swing Modes </span>Enabled
+              </label>
+            </div>
+
+            <input id="swingModeInput" v-model="settings.swingModes" v-validate="settings.swingModesEnabled ? 'required' : ''" :disabled="!settings.swingModesEnabled || hassInfoStatus" data-vv-as="swing modes" name="settings.swingModes" type="text" class="form-control form-control-sm">
+            <small v-if="errors.has('settings.swingModes')" class="form-text text-muted">{{ errors.first('settings.swingModes') }}</small>
+            <small v-else class="form-text text-muted">Ex: static, swing</small>
+          </div>
           <div class="form-group mb-1">
             <button type="button" :disabled="hassInfoStatus" class="btn btn-primary btn-sm mt-2" @click="setupComponent()"><i class="fas fa-cogs mr-1" /> Create table code</button>
           </div>
@@ -127,6 +140,7 @@
               <th class="text-center" style="width: 20px;">#</th>
               <th class="text-center" style="width: 20px;">Mode</th>
               <th class="text-center" style="width: 20px;">Fan</th>
+              <th v-if="settings.swingModesEnabled" class="text-center" style="width: 20px;">Swing</th>
               <th class="text-center" style="width: 20px;">Temp</th>
               <th>IR code</th>
             </tr>
@@ -138,10 +152,11 @@
                   <i :class="item.iconClass" />
                 </button>
               </td>
-              <td class="text-center">{{item.operationMode}}</td>
-              <td class="text-center">{{item.fanMode}}</td>
-              <td class="text-center">{{item.temp}}</td>
-              <td>{{item.irCode}}</td>
+              <td class="text-center">{{ item.operationMode }}</td>
+              <td class="text-center">{{ item.fanMode }}</td>
+              <td v-if="settings.swingModesEnabled" class="text-center">{{ item.swingMode }}</td>
+              <td class="text-center">{{ item.temp }}</td>
+              <td>{{ item.irCode }}</td>
             </tr>
           </tbody>
         </table>
