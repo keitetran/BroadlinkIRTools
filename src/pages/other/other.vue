@@ -14,35 +14,43 @@
         </div>
         <div class="col-12">
           <div class="form-group">
-            <h5>Connection status <span class="badge badge-success">{{$store.state.socketStatus}}</span></h5>
+            <h5>Connection status <span class="badge badge-success">{{ $store.state.socketStatus }}</span></h5>
           </div>
-          <div v-if="hassInfo" class="form-group mb-1" :class="{'is-invalid':errors.has('hassInfo.broadlinkIp')}">
-            <label class="mb-0">You can change Broadlink IP</label>
-            <input v-model="hassInfo.broadlinkIp" v-validate="'required'" data-vv-as="broadlink service" name="hassInfo.broadlinkIp" type="text" class="form-control form-control-sm">
-            <small v-if="errors.has('hassInfo.broadlinkIp')" class="form-text text-muted">{{ errors.first('hassInfo.broadlinkIp') }}</small>
-            <small v-else class="form-text text-muted">Broadlink IP address</small>
-          </div>
-          <div class="form-group mb-1">
-            <div class="row align-items-center mt-2">
-              <div class="col-6">
-                <button type="button" class="btn btn-primary btn-sm" @click="changeBroadlinkIp()">Change command</button>
-              </div>
-              <div v-if="hassInfoStatus" class="col-6 text-right">
-                <small class="pt-3">Press F5 to reconnect</small>
-              </div>
-            </div>
+
+          <div class="form-group mb-1" :class="{ 'is-invalid': errors.has('settings.manufacturer') }">
+            <label class="mb-0">IR receiver</label>
+            <template v-if="availableRemotes && (availableRemotes.length > 0)">
+              <select v-model="selectedRemoteId">
+                <option v-for="remote in availableRemotes" :key="remote.entity_id">{{ remote.entity_id }}</option>
+              </select>
+            </template>
+            <template v-else-if="availableRemotes">
+              <span class="form-group is-invalid">
+                <span class="form-text">No remotes found in Home Assistant</span>
+              </span>
+            </template>
+            <template v-else>
+              Loading...
+            </template>
           </div>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-12">
-          <h4>Export to json</h4>
+          <h4>2. Import codes storage file</h4>
+          Once finished learning the code for each command upload the storage codes file. It is located in your Home Assistant config folder in a sub-folder called <strong>.storage</strong>. Inside of that you should find the storage codes file called something like <strong>broadlink_remote_abc123_codes</strong> (note: your file will have a different value instead of abc123).
+          <div class="form-group mb-1">
+            <button type="button" :disabled="!irDataReady" class="btn btn-primary btn-sm mt-2" @click="$refs.uploadStorageCodesFileInputElm.click()"> <i class="fas fa-file-upload mr-1" />Import storage codes file</button>
+          </div>
+          <input ref="uploadStorageCodesFileInputElm" type="file" style="display: none;" @change="handleStorageCodesUpload">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <h4>3. Export to json</h4>
           <div class="form-group mb-1">
             <button type="button" class="btn btn-primary btn-sm mt-2" @click="exportFile()"> <i class="fas fa-file-download mr-1" /> Export JSON file</button>
           </div>
-        </div>
-        <div class="col-12 mt-2">
-          <div class="alert alert-info p-2">Please check this file content before replace to hass. Because this tool alway update after SmartIR updated.</div>
         </div>
       </div>
     </div>
@@ -61,7 +69,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in irData" :key="index" :ref="'irKey_'+index">
+          <tr v-for="(item, index) in irData" :key="index" :ref="'irKey_' + index">
             <td class="text-center">
               <a href="javascript:;" :class="$helper.getTextClassByIcon(item.iconClass)" @click="sendLearnCommand(index)">
                 <i :class="item.iconClass" />
@@ -70,7 +78,7 @@
             <td class="text-center">
               <input v-model="item.name" class="form-control form-control-sm" type="text">
             </td>
-            <td>{{item.irCode}}</td>
+            <td>{{ item.irCode }}</td>
           </tr>
         </tbody>
       </table>

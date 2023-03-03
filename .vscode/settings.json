@@ -68,5 +68,8 @@
   "html.format.wrapLineLength": 0,
   "css.fileExtensions": [
     "scss"
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

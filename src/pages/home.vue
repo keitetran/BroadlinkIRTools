@@ -2,6 +2,7 @@
 .card {
   border: 0.2rem solid #ededed;
 }
+
 .tip {
   padding-top: 0.4rem;
   font-size: 0.6rem;
@@ -18,31 +19,26 @@
             - If can not connect to hass, please add this url to cors_allowed_origins on hass config file <b><a href="https://www.home-assistant.io/components/http/#cors_allowed_origins">Read more</a></b><br>
             <b class="text-danger">- I do not save any information to server, you can check in on source</b>
           </div>
-          <div class="form-group mb-1" :class="{'is-invalid':errors.has('hassInfo.url')}">
+          <div class="form-group mb-1" :class="{ 'is-invalid': errors.has('hassInfo.url') }">
             <label class="mb-0">Hass Address</label>
-            <input v-model="hassInfo.url" v-validate="'required|url'" :disabled="hassInfoStatus" data-vv-as="HASS address" name="hassInfo.url" type="text" class="form-control form-control-sm">
+            <input v-model="hassInfo.url" v-validate="'required|url'" data-vv-as="HASS address" name="hassInfo.url" type="text" class="form-control form-control-sm">
             <small v-if="errors.has('hassInfo.url')" class="form-text text-muted">{{ errors.first('hassInfo.url') }}</small>
             <small v-else class="form-text text-muted">Https only, hassbian.local is ok</small>
           </div>
-          <div class="form-group mb-1" :class="{'is-invalid':errors.has('hassInfo.token')}">
+          <div class="form-group mb-1" :class="{ 'is-invalid': errors.has('hassInfo.token') }">
             <label class="mb-0">Token</label>
             <code class="mb-0 float-right tip">Enter Hass url will show tip</code>
-            <input v-model="hassInfo.token" v-validate="'required'" :disabled="hassInfoStatus" data-vv-as="token" name="hassInfo.token" type="text" class="form-control form-control-sm">
+            <input v-model="hassInfo.token" v-validate="'required'" data-vv-as="token" name="hassInfo.token" type="text" class="form-control form-control-sm">
             <small v-if="errors.has('hassInfo.token')" class="form-text text-muted">{{ errors.first('hassInfo.token') }}</small>
             <small v-else class="form-text text-muted">
               HASS long time token <a target="_blank" href="https://www.home-assistant.io/docs/authentication/#your-account-profile">readmore</a>
-              <template v-if="showTip"> or get it from <a :href="hassInfo.url+'/profile'" target="_blank">here</a></template>
+              <template v-if="showTip"> or get it from <a :href="hassInfo.url + '/profile'" target="_blank">here</a></template>
             </small>
-          </div>
-          <div class="form-group mb-1" :class="{'is-invalid':errors.has('hassInfo.broadlinkIp')}">
-            <label class="mb-0">Broadlink IP address</label>
-            <input v-model="hassInfo.broadlinkIp" v-validate="'required'" data-vv-as="broadlink service" name="hassInfo.broadlinkIp" type="text" class="form-control form-control-sm">
-            <small v-if="errors.has('hassInfo.broadlinkIp')" class="form-text text-muted">{{ errors.first('hassInfo.broadlinkIp') }}</small>
           </div>
           <div class="form-group mb-1">
             <div class="row align-items-center">
               <div class="col-6">
-                <button type="button" class="btn btn-primary btn-sm mt-2" :disabled="hassInfoStatus" @click="connectToHass()">
+                <button type="button" class="btn btn-primary btn-sm mt-2" @click="connectToHass()">
                   <i class="mr-1" :class="iconConnect" /> Connect to hass
                 </button>
               </div>
@@ -73,15 +69,14 @@
   </div>
 </template>
 <script>
-import { config, swal } from "../../lib";
+import { config, swal, helper } from "../../lib";
 export default {
   data() {
     return {
       iconConnect: "fas fa-link", // fas fa-sync fa-spin
       hassInfo: {
         url: "https://",
-        token: undefined,
-        broadlinkIp: "192.168.1.13"
+        token: undefined
       }
     };
   },
@@ -122,7 +117,7 @@ export default {
 
         let url = new URL(this.hassInfo.url);
         vm.socket = new WebSocket(`wss://${url.host}/api/websocket`);
-        vm.$store.state.socket = vm.socket;
+        vm.$store.commit("socket", vm.socket);
 
         // Listen for messages
         vm.socket.onmessage = (event) => {
@@ -146,20 +141,15 @@ export default {
 
           if (evData.type === "auth_ok") {
             console.log("Login ok...");
-            vm.$store.state.socketStatus = config.socketStatus.connected;
-            vm.$store.state.hassInfo = vm.hassInfo;
+            vm.$store.commit("socketStatus", config.socketStatus.connected);
+            vm.$store.commit("hassInfo", vm.hassInfo);
 
             // subscribe events
             vm.socket.send(JSON.stringify({
-              id: vm.$store.state.socketId++,
+              id: helper.nextSocketMessageId,
               type: "subscribe_events",
               event_type: "state_changed"
             }));
-
-            // vm.socket.send(JSON.stringify({
-            //   id: vm.$store.state.socketId++,
-            //   type: "get_states"
-            // }));
 
             vm.iconConnect = config.iconIr.learnSuccess;
             swal("Good job!", "Login successfully into hass. Now choose the device you want to use", "success", {
@@ -173,7 +163,7 @@ export default {
             });
           };
 
-          vm.$store.state.socketMsgs = evData;
+          vm.$store.commit("socketMsgs", evData);
         };
       }).catch(err => {
         alert(err.message);
