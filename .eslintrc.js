@@ -38,6 +38,7 @@ module.exports = {
     "no-unused-vars": 0,
     "vue/no-v-html": 0,
     "eol-last": 0,
-    "space-before-function-paren": 0
+    "space-before-function-paren": 0,
+    "vue/multi-word-component-names": 0,
   }
 }
