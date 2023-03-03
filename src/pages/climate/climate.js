@@ -26,9 +26,12 @@ export default {
         minTemperature: 18,
         maxTemperature: 32,
         operationModes: "cool, heat",
-        fanModes: "auto, level1, level2, level3, level4"
+        fanModes: "auto, level1, level2, level3, level4",
+        storageFileDeviceKey: undefined
       },
-      sendTarget: undefined
+      currentLearningInfo: undefined,
+      availableRemotes: undefined,
+      selectedRemoteId: undefined
     };
   },
   computed: {
@@ -61,25 +64,25 @@ export default {
     "$store.state.socketMsgs": {
       deep: true,
       handler: function (evData) {
-        if (evData.event && evData.event.data.new_state.state === "notifying" && evData.event.event_type === "state_changed") {
-          let message = evData.event.data.new_state.attributes.message;
-          let irCode = message.replace("Received packet is: ", "");
-          this.$set(this.irData[this.sendTarget.key], "irCode", irCode);
-
-          if (message === "Did not received any signal") {
-            this.$set(this.irData[this.sendTarget.key], "iconClass", config.iconIr.learnFalse);
+        if (this.currentLearningInfo && (evData.id === this.currentLearningInfo.messageId)) {
+          if (evData.type === "result" && evData.success === true) {
+            this.$set(this.irData[this.currentLearningInfo.command.key], "iconClass", config.iconIr.learnSuccess);
+            this.currentLearningInfo = undefined;
             return;
           }
 
-          this.$set(this.irData[this.sendTarget.key], "iconClass", config.iconIr.learnSuccess);
-          this.sendTarget = undefined;
+          this.$set(this.irData[this.currentLearningInfo.command.key], "iconClass", config.iconIr.learnFalse);
         }
       }
     }
   },
   mounted() {
-    if (this.$store.state.hassInfo) {
+    if (this.$store.state.socketStatus === config.socketStatus.connected) {
       this.hassInfo = this.$store.state.hassInfo;
+      helper.getRemotes().then(remotes => {
+        this.availableRemotes = remotes;
+        this.selectedRemoteId = this.availableRemotes[0]?.entity_id;
+      });
     } else {
       return this.$router.push({
         path: "/"
@@ -87,6 +90,13 @@ export default {
     };
   },
   methods: {
+    handleStorageCodesUpload(event) {
+      helper.extractCodesFromStorageCodesFile({
+        storageFileDeviceKey: this.settings.storageFileDeviceKey,
+        storageCodesFile: event.target.files[0],
+        irData: this.irData
+      });
+    },
     exportFile() {
       let jsonData = {
         manufacturer: this.settings.manufacturer,
@@ -137,16 +147,23 @@ export default {
             });
           });
         });
+
+        this.settings.storageFileDeviceKey = `BroadlinkIRTools - ${this.settings.manufacturer} - ` +
+          `${this.settings.supportedModels} - ${Math.floor(Math.random() * 1000000)}`;
       });
     },
     sendLearnCommand(_target) {
+      const messageId = helper.sendBroadlinkLearnCmd({
+        remoteId: this.selectedRemoteId,
+        command: _target.key,
+        storageFileDeviceKey: this.settings.storageFileDeviceKey
+      });
       console.log("Command was send..", _target.key);
-      this.sendTarget = _target;
-      this.$set(this.irData[this.sendTarget.key], "iconClass", config.iconIr.learning);
-      helper.sendBroadlinkLearnCmd(this.$store.state.hassInfo.broadlinkIp);
-    },
-    changeBroadlinkIp() {
-      this.$store.state.hassInfo.broadlinkIp = this.hassInfo.broadlinkIp;
+      this.currentLearningInfo = {
+        command: _target,
+        messageId
+      };
+      this.$set(this.irData[this.currentLearningInfo.command.key], "iconClass", config.iconIr.learning);
     }
   }
 };
